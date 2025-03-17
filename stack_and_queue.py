@@ -125,3 +125,52 @@ class TestMyQueue(unittest.TestCase):
         self.assertFalse(self.my_queue.empty())
         self.my_queue = MyQueue()
         self.assertTrue(self.my_queue.empty())
+
+
+from collections import deque
+
+
+class MyStack:
+    """
+    描述：请你仅使用两个队列实现一个后入先出（LIFO）的栈，并支持普通栈的全部操作（push，top，pop，empty）。
+    """
+
+    def __init__(self):
+        self.dq = deque()
+
+    def push(self, val: int) -> None:
+        self.dq.append(val)
+        for _ in range(len(self.dq) - 1):
+            self.dq.append(self.dq.popleft())
+
+    def top(self) -> int:
+        return self.dq[0]
+
+    def pop(self) -> int:
+        return self.dq.popleft()
+
+    def empty(self) -> bool:
+        return not self.dq
+
+
+class TestMyStack(unittest.TestCase):
+    def setUp(self):
+        self.my_stack = MyStack()
+        self.my_stack.push(1)
+        self.my_stack.push(2)
+        self.my_stack.push(3)
+
+    def test_push_and_top(self):
+        self.assertEqual(len(self.my_stack.dq), 3)
+        self.assertEqual(self.my_stack.top(), 3)
+
+    def test_pop(self):
+        self.assertEqual(self.my_stack.pop(), 3)
+        self.assertEqual(len(self.my_stack.dq), 2)
+        self.assertEqual(self.my_stack.pop(), 2)
+
+    def test_empty(self):
+        self.my_stack = MyStack()
+        self.assertTrue(self.my_stack.empty())
+        self.my_stack.push(1)
+        self.assertTrue(not self.my_stack.empty())
