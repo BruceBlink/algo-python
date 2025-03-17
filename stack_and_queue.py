@@ -1,3 +1,6 @@
+from typing import List, Any
+
+
 class MinStack:
     """
     描述：设计一个支持 push，pop，top 操作，并能在常数时间内检索到最小元素的栈。
@@ -51,3 +54,74 @@ class TestMinStack(unittest.TestCase):
         self.assertEqual(self.min_stack.top(), 5)
         self.min_stack.pop()
         self.assertEqual(self.min_stack.top(), 4)
+
+
+class MyQueue:
+    """
+    描述：请你仅使用两个栈实现一个先入先出（FIFO）的队列，并支持普通队列的全部操作（push，pop，peek，empty）。
+    """
+
+    def __init__(self):
+        self.in_stack = []
+        self.out_stack = []
+
+    def push(self, val: int) -> None:
+        """
+        入队列
+        """
+        self.in_stack.append(val)
+
+    def pop(self) -> int:
+        """
+        出队列并返回队首元素
+        :return:队首元素
+        """
+        self.peek()
+        return self.out_stack.pop()
+
+    def peek(self) -> int | None:
+        """
+        查看队首元素
+        :return: 队首元素
+        """
+        if not self.out_stack:
+            while self.in_stack:
+                self.out_stack.append(self.in_stack.pop())
+            return self.out_stack[-1]
+
+    def empty(self) -> bool:
+        """
+        判断队列时候为空
+        :return:
+        """
+        return not self.in_stack and not self.out_stack
+
+
+class TestMyQueue(unittest.TestCase):
+
+    def setUp(self):
+        self.my_queue = MyQueue()
+        self.my_queue.push(1)
+        self.my_queue.push(2)
+        self.my_queue.push(3)
+        self.my_queue.push(4)
+        self.my_queue.push(5)
+
+    def test_push(self):
+        self.my_queue.push(1)
+        self.assertEqual(self.my_queue.peek(), 1)
+
+    def test_pop(self):
+        self.assertEqual(self.my_queue.pop(), 1)
+        self.assertEqual(self.my_queue.pop(), 2)
+        self.assertEqual(self.my_queue.pop(), 3)
+        self.assertEqual(self.my_queue.pop(), 4)
+        self.assertEqual(self.my_queue.pop(), 5)
+
+    def test_peek(self):
+        self.assertEqual(self.my_queue.peek(), 1)
+
+    def test_empty(self):
+        self.assertFalse(self.my_queue.empty())
+        self.my_queue = MyQueue()
+        self.assertTrue(self.my_queue.empty())
