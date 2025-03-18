@@ -177,3 +177,75 @@ class TestMyStack(unittest.TestCase):
         self.assertTrue(self.my_stack.empty())
         self.my_stack.push(1)
         self.assertTrue(not self.my_stack.empty())
+
+
+class MyCircularQueue:
+    """
+    设计循环队列（LeetCode 622）
+    描述：设计你的循环队列实现。循环队列是一种线性数据结构，其操作表现基于FIFO原则并且队尾被连接在队首之后以形成一个循环
+    """
+
+    def __init__(self, capacity: int):
+        self.queue = [None] * capacity
+        self.head = 0
+        self.tail = 0
+        self.size = 0
+        self.capacity = capacity
+
+    def en_queue(self, value):
+        if self.is_full():
+            return False
+        self.queue[self.tail] = value
+        self.tail = (self.tail + 1) % self.capacity
+        self.size += 1
+        return True
+
+    def de_queue(self) -> int:
+        if self.is_empty():
+            return False
+        self.head = (self.head + 1) % self.capacity
+        self.size -= 1
+        return True
+
+    def front(self) -> int | None:
+        if self.is_empty():
+            return -1
+        return self.queue[self.head]
+
+    def rear(self) -> bool | None:
+        if self.is_empty():
+            return False
+        # 因为tail和size相等，所以是self.tail - 1
+        return self.queue[(self.tail - 1) % self.capacity]
+
+    def is_empty(self) -> bool:
+        return self.size == 0
+
+    def is_full(self) -> bool:
+        return self.size == self.capacity
+
+
+class TestMyCircularQueue(unittest.TestCase):
+    def setUp(self):
+        self.my_circular_queue = MyCircularQueue(5)
+        self.my_circular_queue.en_queue(1)
+        self.my_circular_queue.en_queue(2)
+        self.my_circular_queue.en_queue(3)
+
+    def test_en_queue(self):
+        self.my_circular_queue.en_queue(4)
+        self.my_circular_queue.en_queue(5)
+        self.assertEqual(self.my_circular_queue.front(), 1)
+        self.assertEqual(self.my_circular_queue.rear(), 5)
+        self.assertTrue(self.my_circular_queue.is_full())
+
+    def test_de_queue(self):
+        self.my_circular_queue.de_queue()
+        self.assertEqual(self.my_circular_queue.front(), 2)
+
+    def test_is_empty(self):
+        self.assertFalse(self.my_circular_queue.is_empty())
+        self.my_circular_queue.de_queue()
+        self.my_circular_queue.de_queue()
+        self.my_circular_queue.de_queue()
+        self.assertTrue(self.my_circular_queue.is_empty())
