@@ -3,6 +3,7 @@ from typing import List, Any
 
 class MinStack:
     """
+    最小栈（LeetCode 155）
     描述：设计一个支持 push，pop，top 操作，并能在常数时间内检索到最小元素的栈。
     """
 
@@ -58,6 +59,7 @@ class TestMinStack(unittest.TestCase):
 
 class MyQueue:
     """
+    用栈实现队列（LeetCode 225）
     描述：请你仅使用两个栈实现一个先入先出（FIFO）的队列，并支持普通队列的全部操作（push，pop，peek，empty）。
     """
 
@@ -132,6 +134,7 @@ from collections import deque
 
 class MyStack:
     """
+    用队列实现栈（LeetCode 232）
     描述：请你仅使用两个队列实现一个后入先出（LIFO）的栈，并支持普通栈的全部操作（push，top，pop，empty）。
     """
 
