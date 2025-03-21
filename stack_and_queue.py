@@ -249,3 +249,43 @@ class TestMyCircularQueue(unittest.TestCase):
         self.my_circular_queue.de_queue()
         self.my_circular_queue.de_queue()
         self.assertTrue(self.my_circular_queue.is_empty())
+
+
+class DailyTemperature:
+    """
+    每日温度（LeetCode 739）
+    描述：给定一个温度列表，要生成一个结果列表，结果列表的每个元素表示需要等多少天才能遇到更高的温度。如果之后都不会升高，就用0代替。
+    :param self:
+    :param temp: 温度列表
+    :return: 结果列表
+    """
+
+    @staticmethod
+    def daily_temperatures(temperature: list[int]) -> list[int]:
+        """
+        暴力解法
+        :param temperature:
+        :return:
+        """
+        n = len(temperature)
+        res = n * [0]
+        for i in range(n):
+            for j in range(i + 1, n):
+                if temperature[j] > temperature[i]:
+                    res[i] = j - i
+                    break
+        return res
+
+    def daily_temperatures1(self, temperature: list[int]) -> list[int]:
+        pass
+
+
+
+class TestDailyTemperature(unittest.TestCase):
+
+    def setUp(self):
+        self.temps = [73, 74, 75, 71, 69, 72, 76, 73]
+        self.dt = DailyTemperature()
+
+    def test_daily_temperatures(self):
+        self.assertEqual(DailyTemperature.daily_temperatures(self.temps), [1,1,4,2,1,1,0,0])
