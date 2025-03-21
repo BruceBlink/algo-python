@@ -276,9 +276,22 @@ class DailyTemperature:
                     break
         return res
 
-    def daily_temperatures1(self, temperature: list[int]) -> list[int]:
-        pass
-
+    @staticmethod
+    def daily_temperatures1(temperature: list[int]) -> list[int]:
+        """
+        使用单调栈解法
+        :param temperature:
+        :return:
+        """
+        n = len(temperature)
+        res = [0] * n
+        stack = []
+        for i in range(n):
+            while stack and temperature[i] > temperature[stack[-1]]:
+                top_index = stack.pop()
+                res[top_index] = i - top_index
+            stack.append(i)
+        return res
 
 
 class TestDailyTemperature(unittest.TestCase):
@@ -289,3 +302,6 @@ class TestDailyTemperature(unittest.TestCase):
 
     def test_daily_temperatures(self):
         self.assertEqual(DailyTemperature.daily_temperatures(self.temps), [1,1,4,2,1,1,0,0])
+
+    def test_daily_temperatures1(self):
+        self.assertEqual(DailyTemperature.daily_temperatures1(self.temps), [1,1,4,2,1,1,0,0])
