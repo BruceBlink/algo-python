@@ -293,6 +293,29 @@ class DailyTemperature:
             stack.append(i)
         return res
 
+    @staticmethod
+    def next_greater_element(nums: list[int]) -> list[int]:
+        """
+        下一个更大元素 II（LeetCode 503）
+        描述：给定一个循环数组（最后一个元素的下一个元素是数组的第一个元素），返回数组中每个元素的下一个更大元素。
+
+        :param nums:
+        :return:
+        """
+        n = len(nums)
+        res = [-1] * n
+        stack = []
+        # 这里是一个技巧，对于循环数组，使用数组双倍长度
+        for i in range(n * 2):
+            current_index = i % n
+            # 因为是元素，所以只需要比较当前元素和栈顶索引对应的元素即可
+            while stack and nums[current_index] > nums[stack[-1]]:
+                # 栈顶存储的都是比当前元素大的元素的索引
+                top = stack.pop()
+                res[top] = nums[current_index]
+            stack.append(current_index)
+        return res
+
 
 class TestDailyTemperature(unittest.TestCase):
 
@@ -301,7 +324,10 @@ class TestDailyTemperature(unittest.TestCase):
         self.dt = DailyTemperature()
 
     def test_daily_temperatures(self):
-        self.assertEqual(DailyTemperature.daily_temperatures(self.temps), [1,1,4,2,1,1,0,0])
+        self.assertEqual(DailyTemperature.daily_temperatures(self.temps), [1, 1, 4, 2, 1, 1, 0, 0])
 
     def test_daily_temperatures1(self):
-        self.assertEqual(DailyTemperature.daily_temperatures1(self.temps), [1,1,4,2,1,1,0,0])
+        self.assertEqual(DailyTemperature.daily_temperatures1(self.temps), [1, 1, 4, 2, 1, 1, 0, 0])
+
+    def test_next_greater_element(self):
+        self.assertEqual(DailyTemperature.next_greater_element([1, 2, 3, 4, 3]), [2, 3, 4, -1, 4])
