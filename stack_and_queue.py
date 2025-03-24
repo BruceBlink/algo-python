@@ -363,14 +363,15 @@ class DailyTemperature:
         # 奇数长度肯定不匹配
         if len(string) % 2 != 0:
             return False
-        m = {'(': ')', '{': '}', '[': ']'}
+        m = {')': '(', '}': '{', ']': '['}
         stack = []
         for ch in string:
-            if stack and ch == m[stack[-1]]:
-                stack.pop()
+            if ch in m:
+                if not stack or stack.pop() != m[ch]:
+                    return False
             else:
                 stack.append(ch)
-        return len(stack) == 0
+        return not stack
 
 
 class TestDailyTemperature(unittest.TestCase):
@@ -408,3 +409,12 @@ class TestDailyTemperature(unittest.TestCase):
 
     def test_is_valid6(self):
         self.assertTrue(DailyTemperature.is_valid('({[]})'))
+
+    def test_is_valid7(self):
+        self.assertFalse(DailyTemperature.is_valid(')('))
+
+    def test_is_valid8(self):
+        self.assertFalse(DailyTemperature.is_valid('[}'))
+
+    def test_is_valid9(self):
+        self.assertFalse(DailyTemperature.is_valid('}{'))
