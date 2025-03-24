@@ -316,6 +316,62 @@ class DailyTemperature:
             stack.append(current_index)
         return res
 
+    @staticmethod
+    def remove_duplicates(string: str) -> str:
+        """
+        删除字符串中的所有相邻重复项（LeetCode 1047）
+        给出由小写字母组成的字符串 s，重复项删除操作会选择两个相邻且相同的字母，并删除它们。
+        在 s 上反复执行重复项删除操作，直到无法继续删除。在完成所有重复项删除操作后返回最终的字符串。
+        :param string:
+        :return:
+        """
+        stack = []
+        for ch in string:
+            if stack and stack[-1] == ch:
+                stack.pop()
+            else:
+                stack.append(ch)
+        return ''.join(stack)
+
+    @staticmethod
+    def is_valid(string: str) -> bool:
+        """
+        有效的括号（LeetCode 20）
+        给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
+        有效字符串需满足：
+        左括号必须用相同类型的右括号闭合。
+        左括号必须以正确的顺序闭合。
+        每个右括号都有一个对应的相同类型的左括号。
+        示例 1：
+        输入：s = "()"
+        输出：true
+
+        示例 2：
+        输入：s = "()[]{}"
+        输出：true
+
+        示例 3：
+        输入：s = "(]"
+        输出：false
+
+        示例 4：
+        输入：s = "([])"
+        输出：true
+
+        :return:
+        """
+        # 奇数长度肯定不匹配
+        if len(string) % 2 != 0:
+            return False
+        m = {'(': ')', '{': '}', '[': ']'}
+        stack = []
+        for ch in string:
+            if stack and ch == m[stack[-1]]:
+                stack.pop()
+            else:
+                stack.append(ch)
+        return len(stack) == 0
+
 
 class TestDailyTemperature(unittest.TestCase):
 
@@ -331,3 +387,24 @@ class TestDailyTemperature(unittest.TestCase):
 
     def test_next_greater_element(self):
         self.assertEqual(DailyTemperature.next_greater_element([1, 2, 3, 4, 3]), [2, 3, 4, -1, 4])
+
+    def test_remove_duplicates(self):
+        self.assertEqual(DailyTemperature.remove_duplicates('122433'), '14')
+
+    def test_is_valid1(self):
+        self.assertTrue(DailyTemperature.is_valid('()[]{}'))
+
+    def test_is_valid2(self):
+        self.assertFalse(DailyTemperature.is_valid('(]{}'))
+
+    def test_is_valid3(self):
+        self.assertTrue(DailyTemperature.is_valid('()'))
+
+    def test_is_valid4(self):
+        self.assertTrue(DailyTemperature.is_valid('([]{})'))
+
+    def test_is_valid5(self):
+        self.assertFalse(DailyTemperature.is_valid('())'))
+
+    def test_is_valid6(self):
+        self.assertTrue(DailyTemperature.is_valid('({[]})'))
