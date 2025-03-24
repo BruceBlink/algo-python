@@ -366,7 +366,9 @@ class DailyTemperature:
         m = {')': '(', '}': '{', ']': '['}
         stack = []
         for ch in string:
+            # 判断key(右括号)是否在字典中，左括号进栈，右括号作为字典的key
             if ch in m:
+                # 判断左右括号是否匹配，如果匹配就出栈，栈为空则说明匹配完全
                 if not stack or stack.pop() != m[ch]:
                     return False
             else:
