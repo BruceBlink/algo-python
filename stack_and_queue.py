@@ -464,40 +464,84 @@ class TestDailyTemperature(unittest.TestCase):
         self.assertFalse(DailyTemperature.is_valid('}{'))
 
 
-class MaxSlidingWindow:
+from collections import deque
 
-    def max_sliding_window(self, nums, k):
-        """
-        滑动窗口最大值 (LeetCode 239)
-        给你一个整数数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。
-        你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。返回 滑动窗口中的最大值 。
+"""
+    滑动窗口最大值 (LeetCode 239)
+    给你一个整数数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。
+    你只可以看到在滑动窗口内的 k 个数字。滑动窗口每次只向右移动一位。返回 滑动窗口中的最大值 。
 
-        示例 1：
-        输入：nums = [1,3,-1,-3,5,3,6,7], k = 3
-        输出：[3,3,5,5,6,7]
-        解释：
-        滑动窗口的位置                最大值
-        ---------------               -----
-        [1  3  -1] -3  5  3  6  7       3
-         1 [3  -1  -3] 5  3  6  7       3
-         1  3 [-1  -3  5] 3  6  7       5
-         1  3  -1 [-3  5  3] 6  7       5
-         1  3  -1  -3 [5  3  6] 7       6
-         1  3  -1  -3  5 [3  6  7]      7
-        示例 2：
+    示例 1：
+    输入：nums = [1,3,-1,-3,5,3,6,7], k = 3
+    输出：[3,3,5,5,6,7]
+    解释：
+    滑动窗口的位置                   最大值
+    -------------------------      -----
+    [1  3  -1] -3  5  3  6  7       3
+     1 [3  -1  -3] 5  3  6  7       3
+     1  3 [-1  -3  5] 3  6  7       5
+     1  3  -1 [-3  5  3] 6  7       5
+     1  3  -1  -3 [5  3  6] 7       6
+     1  3  -1  -3  5 [3  6  7]      7
+    示例 2：
+    输入：nums = [1], k = 1
+    输出：[1]
 
-        输入：nums = [1], k = 1
-        输出：[1]
+    提示：
+    1 <= nums.length <= 105
+    -104 <= nums[i] <= 104
+    1 <= k <= nums.length
+"""
 
 
-        提示：
+def max_sliding_window1(nums, k):
+    """
+    滑动窗口暴力解法
+    :param nums:
+    :param k:
+    :return:
+    """
+    n = len(nums)
+    result = []
+    for i in range(n - k + 1):  # 遍历所有窗口的起始位置
+        current_max = -float('inf')
+        # 遍历窗口内的k个元素，找最大值
+        for j in range(i, i + k):
+            current_max = max(current_max, nums[j])
+        result.append(current_max)
+    return result
 
-        1 <= nums.length <= 105
-        -104 <= nums[i] <= 104
-        1 <= k <= nums.length
 
-        :param nums:
-        :param k:
-        :return:
-        """
-        pass
+def max_sliding_window(nums, k):
+    """
+    滑动窗口单调队列解法
+    :param nums:
+    :param k:
+    :return:
+    """
+    window = deque()  # 保存索引，队列元素对应值递减
+    result = []
+    for i, num in enumerate(nums):
+        # 移除超出窗口左侧的队首元素
+        while window and window[0] < i - k + 1:
+            window.popleft()
+        # 维护队列递减：移除队尾小于当前值的元素
+        while window and nums[window[-1]] <= num:
+            window.pop()
+        window.append(i)
+        # 当窗口形成时（i >= k-1），记录队首元素
+        if i >= k - 1:
+            result.append(nums[window[0]])
+    return result
+
+
+class TestMaxSlidingWindow(unittest.TestCase):
+    def setUp(self):
+        self.nums = [1, 3, -1, -3, 5, 3, 6, 7]
+        self.k = 3
+
+    def test_max_sliding_window1(self):
+        self.assertEqual(max_sliding_window1(self.nums, 3), [3, 3, 5, 5, 6, 7])
+
+    def test_max_sliding_window(self):
+        self.assertEqual(max_sliding_window(self.nums, 3), [3, 3, 5, 5, 6, 7])
