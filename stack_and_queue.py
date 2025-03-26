@@ -545,3 +545,58 @@ class TestMaxSlidingWindow(unittest.TestCase):
 
     def test_max_sliding_window(self):
         self.assertEqual(max_sliding_window(self.nums, 3), [3, 3, 5, 5, 6, 7])
+
+
+class TrapSolution:
+    """
+    接雨水 (LeetCode 42)
+    给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+    示例 1：
+
+      3  |_                    ___
+      2  |_        ___        |  |___   ___
+      1  |_  ___  |  |___   __|  |  |__|  |___
+         |__|__|__|__|__|__|__|__|__|__|__|__|
+
+        输入：height = [0,1,0,2,1,0,1,3,2,1,2,1]
+        输出：6
+        解释：上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。
+
+    示例 2：
+    输入：height = [4,2,0,3,2,5]
+    输出：9
+    """
+
+    @staticmethod
+    def trap1(height: list[int]):
+        """
+        暴力解法
+        :param height:
+        :return:
+        """
+        ans = 0
+        n = len(height)
+        for i in range(n):
+            # 计算height[i]左边的最大值
+            max_left = 0
+            for j in range(i):
+                if height[j] > max_left:
+                    max_left = height[j]
+            # 计算height[i]右边的最大值
+            max_right = 0
+            for j in range(i + 1, n):
+                if height[j] > max_right:
+                    max_right = height[j]
+            # 计算储水量(木桶效应，装水的多少由最短的那个木板决定)
+            water = min(max_left, max_right) - height[i]
+            if water > 0:
+                ans += water
+        return ans
+
+
+class TestTrapSolution(unittest.TestCase):
+    def setUp(self):
+        self.height = [0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]
+
+    def test_trap1(self):
+        self.assertEqual(TrapSolution.trap1(self.height), 6)
