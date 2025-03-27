@@ -557,7 +557,7 @@ class TrapSolution:
       2  |_        ___        |  |___   ___
       1  |_  ___  |  |___   __|  |  |__|  |___
          |__|__|__|__|__|__|__|__|__|__|__|__|
-
+          0  1  0  2  1  0  1  3  2  1  2  1
         输入：height = [0,1,0,2,1,0,1,3,2,1,2,1]
         输出：6
         解释：上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。
@@ -593,6 +593,51 @@ class TrapSolution:
                 ans += water
         return ans
 
+    @staticmethod
+    def trap2(height: list[int]):
+        """
+        单调栈解法
+        思路：
+        1. 使用一个栈（列表），用于存储柱子的下标，栈中保存的下标对应的柱子高度保持单调递减。
+        2. 遍历数组，对于当前柱子：
+            - 如果当前柱子高度大于栈顶柱子，则说明存在“凹槽”
+              —— 弹出栈顶元素，设为 mid_index，此时栈顶的下一个元素 left_index（若存在）就是凹槽左边界，
+              —— 当前下标 i 是右边界。可计算接水高度 = min(height[left_index], height[i]) - height[mid_index]，
+              —— 凹槽宽度 = i - left_index - 1。
+              累加面积（雨水量）到答案中。
+            - 否则直接将当前下标入栈。
+        3. 返回累加的雨水总量。
+
+        时间复杂度 O(n)：每个元素最多进栈和出栈一次。
+        空间复杂度 O(n)：最坏情况下栈中存储所有下标。
+        :param height:
+        :return:
+        """
+        n = len(height)
+        ans = 0             # 用于累计雨水总量
+        stack = []          # 栈，用于存储柱子的下标
+
+        # 遍历所有柱子的下标
+        for i in range(n):
+            # 当栈不为空且当前柱子的高度大于栈顶柱子高度时，说明出现了一个可接水的凹槽
+            while stack and height[i] > height[stack[-1]]:
+                # 弹出栈顶，下标对应的柱子即为凹槽的底部(这是一个逻辑问题，因为上面while循环条件是height[i] > height[stack[-1]]，所以栈顶元素必然是最小的)
+                mid_index = stack.pop()
+                # 如果栈为空，则说明没有左边界，无法形成凹槽，退出循环
+                if not stack:
+                    break
+                left_index = stack[-1]  # 当前新的栈顶即为凹槽左边界下标
+                # 计算凹槽宽度：右边界 i 与左边界 left_index 之间的距离减 1
+                width = i - left_index - 1
+                # 计算能接雨水的高度：左右两边边界的较小值减去凹槽底部高度
+                bounded_height = min(height[left_index], height[i]) - height[mid_index]
+                # 将该凹槽区域的雨水量累加到结果中
+                ans += width * bounded_height
+            # 当前下标入栈，等待后续处理
+            stack.append(i)
+
+        return ans
+
 
 class TestTrapSolution(unittest.TestCase):
     def setUp(self):
@@ -600,3 +645,6 @@ class TestTrapSolution(unittest.TestCase):
 
     def test_trap1(self):
         self.assertEqual(TrapSolution.trap1(self.height), 6)
+
+    def test_trap2(self):
+        self.assertEqual(TrapSolution.trap2(self.height), 6)
