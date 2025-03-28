@@ -568,7 +568,7 @@ class TrapSolution:
     """
 
     @staticmethod
-    def trap1(height: list[int]):
+    def trap1(height: list[int]) -> int:
         """
         暴力解法
         :param height:
@@ -594,7 +594,7 @@ class TrapSolution:
         return ans
 
     @staticmethod
-    def trap2(height: list[int]):
+    def trap2(height: list[int]) -> int:
         """
         单调栈解法
         思路：
@@ -638,6 +638,42 @@ class TrapSolution:
 
         return ans
 
+    @staticmethod
+    def trap3(height: list[int]) -> int:
+        """
+        双指针解法
+          3  |_                    ___
+          2  |_        ___        |  |___   ___
+          1  |_  ___  |  |___   __|  |  |__|  |___
+             |__|__|__|__|__|__|__|__|__|__|__|__|
+              0  1  0  2  1  0  1  3  2  1  2  1
+        :param height:
+        :return:
+        """
+        left, right = 0, len(height) - 1
+        left_max = right_max = 0
+        ans = 0
+        while left < right:
+            if height[left] < height[right]:
+                if height[left] >= left_max:
+                    left_max = height[left]
+                else:
+                    # 这个else里的条件是(left_max >= height[left]) < height[right],
+                    # 这样就必然在height[left]处形成凹槽，而
+                    # height[left]处的储水量 = min(left_max, height[left]) - height[left]
+                    #                      = left_max - height[left]
+                    ans += left_max - height[left]
+                # left指针向右移动
+                left += 1
+            else:
+                if height[right] >= right_max:
+                    right_max = height[right]
+                else:
+                    ans += right_max - height[right]
+                # right指针左移动
+                right -= 1
+        return ans
+
 
 class TestTrapSolution(unittest.TestCase):
     def setUp(self):
@@ -648,3 +684,6 @@ class TestTrapSolution(unittest.TestCase):
 
     def test_trap2(self):
         self.assertEqual(TrapSolution.trap2(self.height), 6)
+
+    def test_trap3(self):
+        self.assertEqual(TrapSolution.trap3(self.height), 6)
