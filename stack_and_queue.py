@@ -614,8 +614,8 @@ class TrapSolution:
         :return:
         """
         n = len(height)
-        ans = 0             # 用于累计雨水总量
-        stack = []          # 栈，用于存储柱子的下标
+        ans = 0  # 用于累计雨水总量
+        stack = []  # 栈，用于存储柱子的下标
 
         # 遍历所有柱子的下标
         for i in range(n):
@@ -687,3 +687,101 @@ class TestTrapSolution(unittest.TestCase):
 
     def test_trap3(self):
         self.assertEqual(TrapSolution.trap3(self.height), 6)
+
+
+class CalculaterSolution:
+    """
+    基本计算器 II（LeetCode 227）
+    给你一个字符串表达式 s ，请你实现一个基本计算器来计算并返回它的值。整数除法仅保留整数部分。
+    你可以假设给定的表达式总是有效的。所有中间结果将在 [-231, 231 - 1] 的范围内。
+    注意：不允许使用任何将字符串作为数学表达式计算的内置函数，比如 eval()。
+
+    示例 1：
+    输入：s = "3+2*2"
+    输出：7
+
+    示例 2：
+    输入：s = " 3/2 "
+    输出：1
+
+    示例 3：
+    输入：s = " 3+5 / 2 "
+    输出：5
+
+    :type s: str
+    :rtype: int
+    """
+
+    @staticmethod
+    def calculate1(s: str) -> int:
+
+        # 定义一个函数返回运算符的优先级
+        def precedence(op: str) -> int:
+            if op in ('+', '-'):
+                return 1
+            if op in ('*', '/'):
+                return 2
+            return 0
+
+        # 定义一个函数，根据运算符对两个操作数进行计算
+        def apply_operator(a: int, b: int, op: str) -> int:
+            if op == '+':
+                return a + b
+            elif op == '-':
+                return a - b
+            elif op == '*':
+                return a * b
+            elif op == '/':
+                # 使用 int(a / b) 来实现向零截断的整数除法
+                return int(a / b)
+
+        # 去掉所有空格，简化处理
+        s = s.replace(' ', '')
+        num_stack = []  # 存放数字的栈
+        op_stack = []  # 存放运算符的栈
+
+        i = 0
+        n = len(s)
+        while i < n:
+            ch = s[i]
+            if ch.isdigit():
+                # 如果遇到数字，可能是多位数，连续读取数字
+                num = 0
+                while i < n and s[i].isdigit():
+                    num = num * 10 + int(s[i])
+                    i += 1
+                # 将读到的数字压入数字栈
+                num_stack.append(num)
+                # 这里 continue 跳过后面的 i+=1，因为在内层循环中已自增
+                continue
+            else:
+                # 当前字符为运算符：+ - * /
+                # 当 op_stack 非空且栈顶运算符优先级大于或等于当前运算符，
+                # 则先弹出栈顶运算符并计算对应结果
+                while op_stack and precedence(op_stack[-1]) >= precedence(ch):
+                    op = op_stack.pop()  # 弹出运算符
+                    b = num_stack.pop()  # 弹出数字栈的右操作数
+                    a = num_stack.pop()  # 弹出数字栈的左操作数
+                    # 将计算结果入栈
+                    num_stack.append(apply_operator(a, b, op))
+                # 将当前运算符入栈
+                op_stack.append(ch)
+            i += 1
+
+        # 遍历结束后，可能 op_stack 中还有剩余运算符，依次计算
+        while op_stack:
+            op = op_stack.pop()
+            b = num_stack.pop()
+            a = num_stack.pop()
+            num_stack.append(apply_operator(a, b, op))
+
+        # 数字栈中最后的结果即为最终答案
+        return num_stack[0]
+
+
+class TestCalculaterSolution(unittest.TestCase):
+    def setUp(self):
+        self.string = " 3+5 / 2 "
+
+    def test_calculate1(self):
+        self.assertEqual(CalculaterSolution.calculate1(self.string), 5)
