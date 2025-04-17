@@ -82,13 +82,18 @@ def has_cycle(head: ListNode) -> bool:
     :param head:
     :return:
     """
-    fast = slow = head
-    while fast and slow and fast.next:
-        fast = fast.next.next
-        slow = slow.next
-        if fast is slow:
+    if not head or not head.next:
+        return False
+
+    slow = head
+    fast = head.next  # fast 从 head.next 开始，避免初始时 slow == fast
+
+    while fast and fast.next:
+        if slow == fast:  # 快慢指针相遇，说明有环
             return True
-    return False
+        slow = slow.next  # 慢指针走一步
+        fast = fast.next.next  # 快指针走两步
+    return False  # fast 走到 None，说明无环
 
 
 def has_cycle(head: ListNode) -> bool:
