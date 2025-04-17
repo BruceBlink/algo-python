@@ -28,18 +28,48 @@ def reverse_list1(head: ListNode) -> ListNode:
     cur, prev = head, None
     while cur:
         next_node = cur.next  # 保存下一个节点
-        cur.next = prev       # 反转当前节点的指针
-        prev = cur            # prev移动到当前节点
-        cur = next_node       # cur移动到下一个节点
+        cur.next = prev  # 反转当前节点的指针
+        prev = cur  # prev移动到当前节点
+        cur = next_node  # cur移动到下一个节点
     return prev
 
 
-if __name__ == '__main__':
-    linked_list = ListNode(1)
-    linked_list.next = ListNode(2)
-    linked_list.next.next = ListNode(3)
-    linked_list.next.next.next = ListNode(4)
-    linked_list.next.next.next.next = ListNode(5)
+def swap_pairs(head: ListNode) -> ListNode:
+    """
+    链表节点交换相邻节点(迭代法)
+    :param head:
+    :return:
+    """
+    dummy = ListNode(0, head)  # 创建虚拟头节点指向 head
+    prev = dummy
+    while prev.next and prev.next.next:  # 确保至少有2个节点
+        first = prev.next
+        second = prev.next.next
 
-    reverse = reverse_list(linked_list)
-    print(reverse.val)
+        # 交换相邻节点
+        prev.next = second
+        first.next = second.next
+        second.next = first
+
+        # 移动指针(循环的进行条件)
+        prev = first
+
+    return dummy.next  # 新链表的头节点
+
+
+def swap_pairs_recursion(head: ListNode) -> ListNode:
+    """
+    链表节点交换相邻节点(递归法)
+    :param head:
+    :return:
+    """
+    if not head or not head.next:  # 链表为空或者只有一个节点
+        return head
+
+    first = head
+    second = head.next
+    # 交换first和second, 然后递归处理剩余所有的节点
+    first.next = swap_pairs(second.next)
+    second.next = first
+
+    return second
