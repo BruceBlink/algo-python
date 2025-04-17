@@ -782,3 +782,31 @@ class TestCalculaterSolution(unittest.TestCase):
 
     def test_calculate1(self):
         self.assertEqual(CalculaterSolution.calculate1(self.string), 5)
+
+
+import heapq
+
+
+class KthLargest:
+    """
+    数据流中的第K大元素
+    使用最小堆
+    """
+
+    def __init__(self, k, nums: list[int]):
+        self.k = k
+        self.min_heap = []
+        for num in nums:
+            self.add(num)
+
+    def add(self, val: int) -> int:
+        # 堆中永远只保留K个元素,堆顶是K个中最小的,
+        # 往后数据流中的的新元素只要比堆顶大,就替换堆顶元素即可
+        if len(self.min_heap) < self.k:
+            heapq.heappush(self.min_heap, val)
+        elif val > self.min_heap[0]:  # 替换比堆顶大的元素,因为堆顶是最小的
+            heapq.heappop(self.min_heap)
+            heapq.heappush(self.min_heap. val)
+        return self.min_heap[0]  # 返回堆顶
+
+
