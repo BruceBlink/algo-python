@@ -73,3 +73,34 @@ def swap_pairs_recursion(head: ListNode) -> ListNode:
     second.next = first
 
     return second
+
+
+def has_cycle(head: ListNode) -> bool:
+    """
+    判断链表是否有环(leetcode 141)
+    快慢指针法
+    :param head:
+    :return:
+    """
+    fast = slow = head
+    while fast and slow and fast.next:
+        fast = fast.next.next
+        slow = slow.next
+        if fast is slow:
+            return True
+    return False
+
+
+def has_cycle(head: ListNode) -> bool:
+    """
+    使用hashset
+    :param head:
+    :return:
+    """
+    visited = set()
+    while head:
+        if head in visited:
+            return True
+        visited.add(head)
+        head = head.next  # 步进条件
+    return False
