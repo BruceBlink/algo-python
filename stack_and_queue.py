@@ -516,20 +516,20 @@ def max_sliding_window(nums, k):
     :param k:
     :return:
     """
-    window = deque()  # 保存索引，队列元素对应值递减
-    result = []
-    for i, num in enumerate(nums):
-        # 移除超出窗口左侧的队首元素
-        while window and window[0] < i - k + 1:
-            window.popleft()
-        # 维护队列递减：移除队尾小于当前值的元素
-        while window and nums[window[-1]] <= num:
+    if not nums:
+        return []
+    window, res = [], []
+    for i, x in enumerate(nums):
+        # i >= k表示窗口至少有K个元素满窗口了
+        if i >= k and window[0] <= i - k:  # window[0] <= i - k 是落后于窗口的左边界
+            # 剔除最左边的
+            window.pop(0)
+        while window and nums[window[-1]] <= x:  # 把比x小的所有元素都可以剔除,因为我们要求是要最大值
             window.pop()
-        window.append(i)
-        # 当窗口形成时（i >= k-1），记录队首元素
-        if i >= k - 1:
-            result.append(nums[window[0]])
-    return result
+        window.append(i)   # 首先window里存的是list元素索引
+        if i - k + 1 >= 0:  # 窗口满足有K个元素
+            res.append(nums[window[0]])
+    return res
 
 
 class TestMaxSlidingWindow(unittest.TestCase):
@@ -806,7 +806,28 @@ class KthLargest:
             heapq.heappush(self.min_heap, val)
         elif val > self.min_heap[0]:  # 替换比堆顶大的元素,因为堆顶是最小的
             heapq.heappop(self.min_heap)
-            heapq.heappush(self.min_heap. val)
+            heapq.heappush(self.min_heap.val)
         return self.min_heap[0]  # 返回堆顶
+
+
+def max_sliding_window(nums, k):
+    if not nums:
+        return []
+    window, res = [], []
+    for i, x in enumerate(nums):
+        # i >= k表示窗口至少有K个元素满窗口了
+        if i >= k and window[0] <= i - k:  # window[0] <= i - k 是落后于窗口的左边界
+            # 剔除最左边的
+            window.pop(0)
+        while window and nums[window[-1]] <= x:  # 把比x小的所有元素都可以剔除,因为我们要求是要最大值
+            window.pop()
+        window.append(i)   # 首先window里存的是list元素索引
+        if i >= k - 1:  # 窗口满足有K个元素
+            res.append(nums[window[0]])
+    return res
+
+
+
+
 
 
