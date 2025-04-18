@@ -526,7 +526,7 @@ def max_sliding_window(nums, k):
             window.pop(0)
         while window and nums[window[-1]] <= x:  # 把比x小的所有元素都可以剔除,因为我们要求是要最大值
             window.pop()
-        window.append(i)   # 首先window里存的是list元素索引
+        window.append(i)  # 首先window里存的是list元素索引
         if i - k + 1 >= 0:  # 窗口满足有K个元素
             res.append(nums[window[0]])
     return res
@@ -784,9 +784,6 @@ class TestCalculaterSolution(unittest.TestCase):
         self.assertEqual(CalculaterSolution.calculate1(self.string), 5)
 
 
-import heapq
-
-
 class KthLargest:
     """
     数据流中的第K大元素
@@ -800,19 +797,14 @@ class KthLargest:
             self.add(num)
 
     def add(self, val: int) -> int:
+        import heapq
         # 堆中永远只保留K个元素,堆顶是K个中最小的,
         # 往后数据流中的的新元素只要比堆顶大,就替换堆顶元素即可
         if len(self.min_heap) < self.k:
             heapq.heappush(self.min_heap, val)
         elif val > self.min_heap[0]:  # 替换比堆顶大的元素,因为堆顶是最小的
             heapq.heappop(self.min_heap)
-            heapq.heappush(self.min_heap.val)
+            heapq.heappush(self.min_heap, val)
         return self.min_heap[0]  # 返回堆顶
-
-
-
-
-
-
 
 
