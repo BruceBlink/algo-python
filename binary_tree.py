@@ -220,3 +220,42 @@ def lowest_common_ancestor(root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode
     if left and right:
         return root
     return left or right
+
+
+def lowest_common_ancestor_bst(root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+    """
+    找到给定二叉查找树中的两个节点 p 和 q 的最近公共祖先（Lowest Common Ancestor，LCA）。
+    LCA 是指在一个二叉树中，节点 p 和 q 的最低公共父节点。(LeetCode.236)
+    递归法
+    :param root:
+    :param p:
+    :param q:
+    :return:
+    """
+    # 如果两个节点都比root小,说明都在左子树
+    if p.val < root.val > q.val:
+        return lowest_common_ancestor(root.left, p, q)
+    # p,q都比root大,说明都在右子树
+    elif p.val > root.val and root.val < q.val:
+        return lowest_common_ancestor(root.right, p, q)
+    # 否则分别在root两侧,必然root就是LCA
+    else:
+        return root
+
+
+def lowest_common_ancestor_bst_loop(root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+    """
+    循环法
+    :param root:
+    :param p:
+    :param q:
+    :return:
+    """
+    while root:
+        if p.val < root.val > q.val:
+            root = root.left
+        elif p.val > root.val and q.val > root.val:
+            root = root.right
+        else:
+            return root
+
