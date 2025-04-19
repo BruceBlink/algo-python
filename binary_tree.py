@@ -198,3 +198,25 @@ def is_valid_bst_inorder(root):
     valid, _ = inorder_traversal(root, float('-inf'))
     return valid
 
+
+def lowest_common_ancestor(root: TreeNode, p: TreeNode, q: TreeNode) -> TreeNode:
+    """
+    找到给定二叉树中的两个节点 p 和 q 的最近公共祖先（Lowest Common Ancestor，LCA）。
+    LCA 是指在一个二叉树中，节点 p 和 q 的最低公共父节点。(LeetCode.236)
+    :param root:
+    :param p:
+    :param q:
+    :return:
+    """
+    if not root:
+        return root
+    # 如果遍历的当前节点是 p 或 q，直接返回当前节点（因为这就是潜在的最近公共祖先）
+    if root == p or root == q:
+        return root
+    # 递归查找左子树和右子树的 LCA
+    left = lowest_common_ancestor(root.left, p, q)
+    right = lowest_common_ancestor(root.right, p, q)
+    # 这是回溯思维,从上往下找到两个,反过来必然会汇聚到一个公共点
+    if left and right:
+        return root
+    return left or right
