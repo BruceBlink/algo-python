@@ -158,3 +158,43 @@ def min_depth(root) -> int:
     return min(min_depth(root.left), min_depth(root.right)) + 1
 
 
+def validate_BST(root: TreeNode) -> bool:
+    """
+    检查树是不是二叉搜索树 (leetcode.98)
+    中序遍历二叉树查看结果是不是升序的
+    (由二叉搜索树的性质可以推导出,二叉搜索树中序遍历的结果一定是升序数组)
+    :param root:
+    :return:
+    """
+    stack = []
+    inorder = float('-inf')
+
+    while stack or root:
+        while root:
+            stack.append(root)
+            root = root.left
+        root = stack.pop()
+        if root.val <= inorder:
+            return False
+        inorder = root.val
+        root = root.right
+    return True
+
+
+def is_valid_bst_inorder(root):
+    def inorder_traversal(node, inorder):
+        if not node:
+            return True, inorder
+        # 递归访问左子树
+        is_left_valid, inorder = inorder_traversal(node.left, inorder)
+        if not is_left_valid or node.val <= inorder:
+            return False, inorder
+        # 更新中序遍历的上一个值
+        inorder = node.val
+        # 递归访问右子树
+        return inorder_traversal(node.right, inorder)
+
+    # 从根节点开始
+    valid, _ = inorder_traversal(root, float('-inf'))
+    return valid
+
