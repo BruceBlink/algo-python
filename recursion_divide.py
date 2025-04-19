@@ -43,5 +43,46 @@ def my_pow_loop(x: float, n: int) -> float:
     return res
 
 
-if __name__ == '__main__':
-    my_pow_loop(3, 4)
+def majority_element(nums: list[int]) -> int:
+    """
+    求找出数组中出现次数超过 ⌊n//2⌋ 的元素（多数元素） n为数组长度
+    哈希法计数
+    :param nums:
+    :return:
+    """
+    count = {}
+    for num in nums:
+        # 统计每个数字出现的次数
+        count[num] = count.get(num, 0) + 1
+        if count[num] > len(nums) // 2:  # 向下取整
+            return num
+
+
+def majority_element_sort(nums: list[int]) -> int:
+    """
+    排序法
+    :param nums:
+    :return:
+    """
+    nums.sort()
+    return nums[len(nums) // 2]
+
+
+def majority_element_bm(nums: list[int]) -> int:
+    """
+    Boyer-Moore 投票算法
+    :param nums:
+    :return:
+    """
+    count = 0
+    candidate = None
+    for num in nums:
+        if count == 0:
+            candidate = num
+        if num == candidate:
+            count += 1
+        else:
+            count -= 1
+    return candidate
+
+
