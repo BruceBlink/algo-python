@@ -98,7 +98,7 @@ def three_sum(nums: list[int]) -> list[list[int]]:
     res = []
     nums.sort()
     n = len(nums)
-    for i in range(n):
+    for i in range(n - 2):
         # 跳过重复的元素
         if i > 0 and nums[i] == nums[i - 1]:
             continue
