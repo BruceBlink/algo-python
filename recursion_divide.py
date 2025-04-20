@@ -86,3 +86,21 @@ def majority_element_bm(nums: list[int]) -> int:
     return candidate
 
 
+def generate_parenthesis(n: int) -> list[str]:
+    """
+    生成有效的括号组合(leetcode.22)
+    数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
+    """
+    def _gen_parenthesis(left: int, right: int, m: int, res: str):
+        # 如果左右括号的数量全部用完，说明全部组合完毕
+        if left == m and right == m:
+            result.append(res)  # 可以写入结果集
+            return
+        if left < n:  # 说明左括号没用完，继续用左括号
+            _gen_parenthesis(left + 1, right, m, res + "(")
+        if right < left and right < n:  # 左右括号没有匹配完毕，继续使用右括号
+            _gen_parenthesis(left, right + 1, m, res + ")")
+
+    result = []
+    _gen_parenthesis(0, 0, n, "")
+    return result
