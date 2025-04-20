@@ -91,6 +91,7 @@ def generate_parenthesis(n: int) -> list[str]:
     生成有效的括号组合(leetcode.22)
     数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
     """
+
     def _gen_parenthesis(left: int, right: int, m: int, res: str):
         # 如果左右括号的数量全部用完，说明全部组合完毕
         if left == m and right == m:
@@ -103,4 +104,58 @@ def generate_parenthesis(n: int) -> list[str]:
 
     result = []
     _gen_parenthesis(0, 0, n, "")
+    return result
+
+
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+def level_through_bt_loop(root: TreeNode) -> list[list[int]]:
+    """
+    层序遍历二叉树(leetcode.102)
+    迭代法
+    """
+    if not root:
+        return []
+    from collections import deque
+    # 初始化我们的结果和队列
+    result, queue = [], deque
+    # 首先 root进入队列
+    queue.append(root)
+    while queue:
+        # 定义当前层级的val和当前层级的大小
+        current_level_val_list, level_size = [], len(queue)
+        for _ in range(level_size):
+            curr_node = queue.popleft()
+            current_level_val_list.append(curr_node.val)
+            if curr_node.left:
+                queue.append(curr_node.left)
+            if curr_node.right:
+                queue.append(curr_node.right)
+        result.append(current_level_val_list)
+    return result
+
+
+def level_through_bt_recursion(root: TreeNode) -> list[list[int]]:
+    """
+    递归法
+    """
+
+    def dfs(node: TreeNode, level: int):
+        if not node:
+            return
+        if len(result) < level + 1:
+            result.append([])
+        result[level].append(node.val)
+        dfs(node.left, level + 1)
+        dfs(node.right, level + 1)
+
+    if not root:
+        return []
+    result = []
+    dfs(root, 0)
     return result
