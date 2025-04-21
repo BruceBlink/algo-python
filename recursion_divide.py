@@ -342,7 +342,7 @@ def solve_sudoku(board: list[list[str]]) -> None:
             for c in range(9):
                 if _board[r][c] == '.':
                     return r, c
-        return -1, -1 # 没有空的单元格
+        return -1, -1  # 没有空的单元格
 
     def backtrack():
         _r, _c = find_empty(board)
@@ -355,7 +355,7 @@ def solve_sudoku(board: list[list[str]]) -> None:
                 place_number(_r, _c, _num)
                 # 递归调用，尝试解决剩余部分
                 if backtrack():
-                    return True # 如果递归调用返回True，表示找到一个完整的解
+                    return True  # 如果递归调用返回True，表示找到一个完整的解
                 # 如果递归调用返回False 说明数字不满足条件，要回溯,删除已经填入的数字
                 remove_number(_r, _c, _num)
         # 如果所有的数字都没有扎到解，返回False
@@ -369,15 +369,15 @@ def solve_sudoku(board: list[list[str]]) -> None:
 # 创建一个数独盘面（需要保证是有效数独，否则可能无解）
 # 示例输入 (来自 LeetCode 题目描述)
 board_to_solve = [
-    ["5","3",".",".","7",".",".",".","."],
-    ["6",".",".","1","9","5",".",".","."],
-    [".","9","8",".",".",".",".","6","."],
-    ["8",".",".",".","6",".",".",".","3"],
-    ["4",".",".","8",".","3",".",".","1"],
-    ["7",".",".",".","2",".",".",".","6"],
-    [".","6",".",".",".",".","2","8","."],
-    [".",".",".","4","1","9",".",".","5"],
-    [".",".",".",".","8",".",".","7","9"]
+    ["5", "3", ".", ".", "7", ".", ".", ".", "."],
+    ["6", ".", ".", "1", "9", "5", ".", ".", "."],
+    [".", "9", "8", ".", ".", ".", ".", "6", "."],
+    ["8", ".", ".", ".", "6", ".", ".", ".", "3"],
+    ["4", ".", ".", "8", ".", "3", ".", ".", "1"],
+    ["7", ".", ".", ".", "2", ".", ".", ".", "6"],
+    [".", "6", ".", ".", ".", ".", "2", "8", "."],
+    [".", ".", ".", "4", "1", "9", ".", ".", "5"],
+    [".", ".", ".", ".", "8", ".", ".", "7", "9"]
 ]
 
 solve_sudoku(board_to_solve)
@@ -385,3 +385,211 @@ solve_sudoku(board_to_solve)
 print("解好的数独盘面:")
 for row in board_to_solve:
     print(" ".join(row))
+
+
+class Trie:
+    """
+    实现一个 Trie（前缀树）(LeetCode.208)
+    Trie 是一种树形数据结构，用于存储字符串集合。它的主要优势在于可以高效地进行前缀匹配。一个 Trie 的结构通常是这样的：
+    * 根节点不存储任何字符。
+    * 每个节点存储一个字符。
+    * 从根节点到某个节点的路径上的字符组合起来表示一个字符串的前缀。
+    * 某些节点会被标记为单词的结尾，表示从根节点到该节点的路径形成了一个完整的单词。
+
+    你需要实现 `Trie` 类，并包含以下三个方法：
+
+    1.  `insert(word)`: 向 Trie 中插入一个单词。
+    2.  `search(word)`: 判断 Trie 中是否存在完整的单词 `word`。
+    3.  `startsWith(prefix)`: 判断 Trie 中是否存在以 `prefix` 为前缀的单词。
+
+    我们可以使用嵌套字典或者自定义节点类来实现 Trie。使用嵌套字典的方式比较简洁直观。每个节点（字典）的键是子节点的字符，值是对应的子节点（另一个字典）。
+    下面是使用嵌套字典实现的 Python 代码：
+
+    """
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        # 使用一个字典来表示 Trie 的节点
+        # 键是字符，值是对应的子节点 (另一个字典)
+        # '_end_': 一个特殊标记，表示当前节点是某个单词的结尾
+        self.root = {}
+
+    def insert(self, word: str) -> None:
+        """
+        Inserts a word into the trie.
+        """
+        node = self.root
+        for char in word:
+            # 如果当前字符不在当前节点的子节点中，则创建一个新的子节点
+            if char not in node:
+                node[char] = {}
+            # 移动到下一个节点 (子节点)
+            node = node[char]
+        # 在单词的最后一个字符对应的节点处做一个标记，表示这里是一个完整的单词的结尾
+        node['_end_'] = True
+
+    def search(self, word: str) -> bool:
+        """
+        Returns if the word is in the trie.
+        """
+        node = self.root
+        for char in word:
+            # 如果当前字符不在当前节点的子节点中，说明该单词不存在于 Trie 中
+            if char not in node:
+                return False
+            # 移动到下一个节点
+            node = node[char]
+        # 遍历完所有字符后，检查当前节点是否有单词结尾标记 '_end_'
+        # 只有有标记才表示这是一个完整的单词
+        return '_end_' in node
+
+    def startsWith(self, prefix: str) -> bool:
+        """
+        Returns if there is any word in the trie that starts with the given prefix.
+        """
+        node = self.root
+        for char in prefix:
+            # 如果当前字符不在当前节点的子节点中，说明没有单词以该前缀开头
+            if char not in node:
+                return False
+            # 移动到下一个节点
+            node = node[char]
+        # 如果能顺利遍历完所有前缀字符，说明至少有一个单词以该前缀开头
+        # 不需要在意是否有 '_end_' 标记，因为只要路径存在即可
+        return True
+
+
+# Your Trie object will be instantiated and called as such:
+# obj = Trie()
+# obj.insert(word)
+# param_2 = obj.search(word)
+# param_3 = obj.startsWith(prefix)
+"""
+解释:
+
+* `__init__`: 初始化时，创建一个空的字典 `self.root` 作为 Trie 的根节点。
+* `insert(word)`: 遍历单词的每个字符。从根节点开始，对于每个字符，如果当前节点没有对应的子节点，就创建一个新的空字典作为子节点，并将当前节点移动到这个子节点。遍历完单词后，在最后一个字符对应的节点字典中添加一个特殊键值对 `'_end_': True`，用来标记这个节点是单词的结束。
+* `search(word)`: 遍历单词的每个字符。如果发现任何一个字符在当前节点的子节点中不存在，说明整个单词不存在，返回 `False`。如果能顺利遍历完所有字符，最后检查当前节点是否有 `'_end_'` 标记。只有存在标记，才表示 `word` 是一个完整的被插入过的单词。
+* `startsWith(prefix)`: 遍历前缀的每个字符。如果发现任何一个字符在当前节点的子节点中不存在，说明没有单词以该前缀开头，返回 `False`。如果能顺利遍历完所有前缀字符，说明这条前缀路径是存在的，至少有一个单词以它开头，返回 `True`。
+
+这种实现方式简单直观，利用字典来表示节点之间的链接关系。键是字符，值是指向下一个节点的引用。特殊键 `'_end_'` 用于区分某个前缀本身是否构成一个完整的单词。
+"""
+
+
+class TrieNode:
+    """
+    好的，我们来使用 `list` 来实现 Trie。
+    使用 `list` 来表示子节点通常意味着我们知道所有可能的字符范围。对于 LeetCode 208 题，输入的单词只包含小写英文字母 `a-z`，所以每个节点最多可以有 26 个子节点。
+    我们可以用一个长度为 26 的列表，列表的索引对应字符的顺序（例如，索引 0 对应 'a'，索引 1 对应 'b'，...，索引 25 对应 'z'）。列表的每个元素存储指向对应子节点的引用。
+    这种实现方式通常比使用字典在查找速度上略快（直接通过索引访问是 O(1)），但在空间上可能会占用更多固定空间，即使某些字符的子节点为空（列表元素为 `None`）。
+    首先，我们需要定义一个节点类来表示 Trie 中的每一个节点：
+    """
+
+    def __init__(self):
+        # 使用一个长度为 26 的列表来存储子节点
+        # children[0] 对应字符 'a' 的子节点
+        # children[1] 对应字符 'b' 的子节点
+        # ...
+        # children[25] 对应字符 'z' 的子节点
+        # 如果某个位置为 None，表示没有对应的子节点
+        self.children = [None] * 26
+
+        # 标志位，表示从根节点到当前节点形成的路径是否构成一个完整的单词
+        self.is_end_of_word = False
+
+
+class TrieList:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        # Trie 的根节点是一个 TrieNode 实例
+        self.root = TrieNode()
+
+    def _char_to_index(self, char: str) -> int:
+        """
+        helper 方法：将小写英文字母映射到 0-25 的索引
+        """
+        return ord(char) - ord('a')
+
+    def insert(self, word: str) -> None:
+        """
+        Inserts a word into the trie.
+        """
+        node = self.root  # 从根节点开始
+        for char in word:
+            index = self._char_to_index(char)  # 获取当前字符对应的索引
+
+            # 如果当前节点的 children 列表中，该索引位置没有子节点，则创建一个新的 TrieNode
+            if node.children[index] is None:
+                node.children[index] = TrieNode()
+
+            # 移动到下一个节点 (子节点)
+            node = node.children[index]
+
+        # 遍历完单词的所有字符后，将当前节点标记为单词的结尾
+        node.is_end_of_word = True
+
+    def search(self, word: str) -> bool:
+        """
+        Returns if the word is in the trie.
+        """
+        node = self.root  # 从根节点开始
+        for char in word:
+            index = self._char_to_index(char)  # 获取当前字符对应的索引
+
+            # 如果当前节点的 children 列表中，该索引位置为 None，
+            # 说明沿着这个路径找不到对应的字符，该单词不存在
+            if node.children[index] is None:
+                return False
+
+            # 移动到下一个节点
+            node = node.children[index]
+
+        # 遍历完所有字符后，检查当前节点是否是某个单词的结尾
+        # 只有是结尾才表示找到了完整的单词
+        return node.is_end_of_word
+
+    def starts_with(self, prefix: str) -> bool:
+        """
+        Returns if there is any word in the trie that starts with the given prefix.
+        """
+        node = self.root  # 从根节点开始
+        for char in prefix:
+            index = self._char_to_index(char)  # 获取当前字符对应的索引
+
+            # 如果当前节点的 children 列表中，该索引位置为 None，
+            # 说明沿着这个路径找不到对应的字符，没有单词以该前缀开头
+            if node.children[index] is None:
+                return False
+
+            # 移动到下一个节点
+            node = node.children[index]
+
+        # 如果能顺利遍历完所有前缀字符，说明这条前缀路径存在
+        # 即使当前节点不是单词结尾，也表示有单词以该前缀开头
+        return True
+
+
+# Your Trie object will be instantiated and called as such:
+# obj = Trie()
+# obj.insert(word)
+# param_2 = obj.search(word)
+# param_3 = obj.startsWith(prefix)
+"""
+
+**解释:**
+
+1.  **`TrieNode` 类:** 定义了 Trie 中的一个节点。它包含一个长度为 26 的 `children` 列表，用于存放指向子节点的引用；一个布尔型的 `is_end_of_word` 标志，表示该节点是否是某个单词的末尾。
+2.  **`Trie` 类:**
+* `__init__`: 创建 Trie 的根节点，它是一个 `TrieNode` 实例。
+* `_char_to_index`: 一个辅助方法，将字符 'a' 到 'z' 转换为列表索引 0 到 25。
+* `insert(word)`: 遍历单词的每个字符，通过 `_char_to_index` 找到对应的索引。如果当前节点的 `children` 列表在该索引处没有子节点，就创建一个新的 `TrieNode`。然后将当前节点移动到对应的子节点。单词遍历结束后，设置当前节点的 `is_end_of_word` 为 `True`。
+* `search(word)`: 遍历单词的每个字符，通过索引在 `children` 列表中查找子节点。如果任一字符对应的子节点不存在（为 `None`），则单词不存在，返回 `False`。如果成功遍历完所有字符，最后检查当前节点的 `is_end_of_word` 标志。
+* `startsWith(prefix)`: 遍历前缀的每个字符，通过索引在 `children` 列表中查找子节点。如果任一字符对应的子节点不存在，返回 `False`。如果能遍历完所有前缀字符，说明前缀路径存在，返回 `True`。
+
+这种使用 `list` 的实现方式在处理固定且有限的字符集时比较高效，因为通过索引访问列表是 O(1) 操作。与使用字典相比，它的优点是查找更快，缺点是如果字符集很大或者稀疏，可能会浪费较多内存空间。对于小写英文字母，26 的长度是固定的，所以这是常见且有效的实现方式。
+"""
