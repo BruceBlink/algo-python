@@ -221,12 +221,12 @@ def total_n_queens(n: int) -> int:
         """
         row: 当前处理的行数
         """
-        nonlocal count # 声明使用外部作用域的 count 变量
+        nonlocal count  # 声明使用外部作用域的 count 变量
 
         # 如果已经放置了N个皇后（遍历完所有行），则找到一个解决方案
         if row == n:
-            count += 1 # 直接修改外部的 count 变量
-            return # 找到解后结束当前路径的回溯
+            count += 1  # 直接修改外部的 count 变量
+            return  # 找到解后结束当前路径的回溯
 
         # 尝试在当前行的每一列放置皇后
         for c in range(n):
@@ -248,8 +248,34 @@ def total_n_queens(n: int) -> int:
 
     # 从第一行（索引0）开始启动回溯过程
     backtrack(0)
-    return count # 返回最终的总数
+    return count  # 返回最终的总数
+
 
 # 示例用法
 # print(total_n_queens(4)) # 输出 2
 # print(total_n_queens(8)) # 输出 92
+
+def is_valid_sudoku(board: list[list[str]]) -> bool:
+    """
+    有效数独(leetcode.36)
+    """
+    rows = [set() for _ in range(9)]  # 记录每一行出现的数字
+    cols = [set() for _ in range(9)]  # 记录每一列出现的数字
+    boxes = [set() for _ in range(9)]  # 记录每一个3*3子格出现的数字
+
+    for r in range(9):
+        for c in range(9):
+            num = board[r][c]
+            if num == '.':
+                continue
+            # 计算当前单元格所属的 3*3 子格的索引
+            box_index = (r // 3) * 3 + (c // 3)
+            # 检查当前数字是否已在行、列或子格中出现过
+            if num in rows[r] or num in cols[c] or num in boxes[box_index]:
+                return False  # 发现重复，数独无效
+            # 将当前数字添加到对应的行、列和子格记录中
+            rows[r].add(num)
+            cols[c].add(num)
+            boxes[box_index].add(num)
+    # 遍历整个棋盘都没发现重复，数独有效
+    return True
