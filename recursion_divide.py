@@ -279,3 +279,87 @@ def is_valid_sudoku(board: list[list[str]]) -> bool:
             boxes[box_index].add(num)
     # 遍历整个棋盘都没发现重复，数独有效
     return True
+
+
+def solve_sudoku(board: list[list[str]]) -> None:
+    """
+    这道题目要求填充一个 9x9 的数独棋盘，使得其成为一个有效的（且完整填充的）数独。(LeetCode.37)
+    我们可以使用回溯算法来解决这个问题。
+    回溯算法的基本思路是：
+    1.找到棋盘中的一个空单元格（'.'）。
+    2.尝试在当前空单元格中填入数字 1-9。
+    3.对于每一个尝试填入的数字，检查其是否符合数独规则（与当前行、列和 3x3 子格中的其他数字不冲突）。
+    4.如果填入的数字有效，则递归调用回溯函数，去解决下一个空单元格。
+    5.如果在当前单元格填入某个数字后，后续的递归调用成功找到了一个完整的解，
+      则说明当前数字是正确的，整个问题得解，返回 True。
+    6.如果当前单元格尝试了数字 1-9 后，都没有找到一个有效的解（即后续的递归调用都失败了），
+      则说明当前单元格的假设是错误的，需要进行回溯。将当前单元格重新置为空（'.'），并返回 False，
+      以便上层调用可以尝试其他可能性。
+    7.如果整个棋盘都没有空单元格了，说明已经找到了一个完整的解，返回 True。
+    由于我们需要修改原始棋盘（原地解），所以回溯时需要撤销之前的修改。
+    """
+    # 使用集合预处理已有的数字，提高查询效率
+    rows = [set() for _ in range(9)]  # 行
+    cols = [set() for _ in range(9)]  # 列
+    boxes = [set() for _ in range(9)]  # 3 * 3
+    for r in range(9):
+        for c in range(9):
+            num = board[r][c]
+            if num != '.':
+                rows[r].add(num)
+                cols[c].add(num)
+                box_index = (r // 3) * 3 + (c // 3)
+                boxes[box_index].add(num)
+
+    def is_valid(_r, _c, _num):
+        """检查board[_r][_c]放置的数字num是否有效"""
+        box_idx = (_r // 3) * 3 + (_c // 3)
+        return _num not in rows[_r] and _num not in cols[_c] and _num not in boxes[box_idx]
+
+    def place_number(_r, _c, _num):
+        """
+        在boxes[_r][_c]中放置数字num，并更新对应的集合
+        """
+        rows[_r].add(_num)
+        cols[_c].add(_num)
+        box_idx = (_r // 3) * 3 + (_c // 3)
+        boxes[box_idx].add(_num)
+        board[_r][_c] = _num
+
+    def remove_number(_r, _c, _num):
+        """
+        从board[_r][_c]移除不符合条件的数字，并更新集合（回溯时用）
+        """
+        rows[_r].remove(_num)
+        cols[_c].remove(_num)
+        box_idx = (_r // 3) * 3 + (_c // 3)
+        boxes[box_idx].remove(_num)
+        board[_r][_c] = '.'
+
+    def find_empty(_board):
+        """找到棋盘中第一个空单元格 '.'"""
+        for r in range(9):
+            for c in range(9):
+                if _board[r][c] == '.':
+                    return r, c
+        return -1, -1 # 没有空的单元格
+
+    def backtrack():
+        _r, _c = find_empty(board)
+        # 如果没有找到空单元格，说明数组全部解开了
+        if _r == -1:
+            return True
+        for _num in "123456789":
+            # 如果数字满足条件, 放入数字
+            if is_valid(_r, _c, _num):
+                place_number(_r, _c, _num)
+                # 递归调用，尝试解决剩余部分
+                if backtrack():
+                    return True # 如果递归调用返回True，表示找到一个完整的解
+                # 如果递归调用返回False 说明数字不满足条件，要回溯,删除已经填入的数字
+                remove_number(_r, _c, _num)
+        # 如果所有的数字都没有扎到解，返回False
+        return False
+
+    # 从第一个空单元格开始
+    backtrack()
