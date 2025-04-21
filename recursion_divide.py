@@ -159,3 +159,97 @@ def level_through_bt_recursion(root: TreeNode) -> list[list[int]]:
     result = []
     dfs(root, 0)
     return result
+
+
+def solve_n_queen(n: int) -> list[list[str]]:
+    """
+    求解n皇后问题，"Q"表示皇后，"."表示空格(leetcode.51)
+    """
+
+    # 结果数组
+    solutions = []
+    # 初始化棋盘和辅助集合
+    cols = set()  # 记录被占用的列
+    diag = set()  # 记录被占用的主对角线
+    anti_diag = set()  # 记录被占用的主副对角线
+    # 初始化棋盘, '.'为空位， 'Q'表示皇后
+    board = [["." for _ in range(n)] for _ in range(n)]
+
+    def backtrack(r: int):
+        # 如果已经放置过N个皇后（遍历完所有的行）， 则找到一种解决方案
+        if r == n:
+            # 格式化当前棋盘状态
+            formatted_board = ["".join(row) for row in board]
+            solutions.append(formatted_board)
+            return
+        # 尝试在当前行每一列放置皇后
+        for c in range(n):
+            # 检查当前位置是否安全（不在被占用的列、主副对角线上）
+            if c not in cols and (r + c) not in diag and (r - c) not in anti_diag:
+                # 放置皇后
+                cols.add(c)
+                diag.add(r + c)
+                anti_diag.add(r - c)
+                board[r][c] = 'Q'
+                # 递归调用， 处理下一行
+                backtrack(r + 1)
+
+                # 回溯： 移除皇后，尝试其他的列
+                cols.remove(c)
+                diag.remove(r + c)
+                anti_diag.remove(r - c)
+                board[r][c] = '.'
+
+    # 从第一行 (索引0)开始回溯
+    backtrack(0)
+    return solutions
+
+
+def total_n_queens(n: int) -> int:
+    """
+    求n皇后解的个数(leetcode.51)
+    """
+    count = 0  # 记录解决方案的总数
+
+    # 使用集合记录已占用的位置
+    cols = set()  # 记录被占用的列
+    diag = set()  # 记录被占用的主对角线 (r + c)
+    # 修正注释
+    anti_diag = set()  # 记录被占用的副对角线 (r - c)
+
+    def backtrack(row: int):
+        """
+        row: 当前处理的行数
+        """
+        nonlocal count # 声明使用外部作用域的 count 变量
+
+        # 如果已经放置了N个皇后（遍历完所有行），则找到一个解决方案
+        if row == n:
+            count += 1 # 直接修改外部的 count 变量
+            return # 找到解后结束当前路径的回溯
+
+        # 尝试在当前行的每一列放置皇后
+        for c in range(n):
+            # 检查当前位置 (row, c) 是否安全
+            if c not in cols and (row + c) not in diag and (row - c) not in anti_diag:
+                # 放置皇后，更新占用的集合
+                cols.add(c)
+                diag.add(row + c)
+                anti_diag.add(row - c)
+
+                # 递归调用，处理下一行
+                # 这里不需要接收返回值，因为 count 是通过 nonlocal 直接修改的
+                backtrack(row + 1)
+
+                # 回溯：移除皇后，恢复状态，尝试当前行的其他列
+                cols.remove(c)
+                diag.remove(row + c)
+                anti_diag.remove(row - c)
+
+    # 从第一行（索引0）开始启动回溯过程
+    backtrack(0)
+    return count # 返回最终的总数
+
+# 示例用法
+# print(total_n_queens(4)) # 输出 2
+# print(total_n_queens(8)) # 输出 92
