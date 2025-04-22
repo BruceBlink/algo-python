@@ -1,3 +1,6 @@
+import unittest
+
+
 class MyCircularQueue:
     """
     设计你的循环队列实现。 循环队列是一种线性数据结构，其操作表现基于 FIFO（先进先出）原则并且队尾被连接在队首之后以形成一个循环。它也被称为“环形缓冲器”。
@@ -110,3 +113,29 @@ class MyCircularQueue:
 
     def is_full(self) -> bool:
         return self.size == self.capacity
+
+
+class TestMyCircularQueue(unittest.TestCase):
+    def setUp(self):
+        self.my_circular_queue = MyCircularQueue(5)
+        self.my_circular_queue.en_queue(1)
+        self.my_circular_queue.en_queue(2)
+        self.my_circular_queue.en_queue(3)
+
+    def test_en_queue(self):
+        self.my_circular_queue.en_queue(4)
+        self.my_circular_queue.en_queue(5)
+        self.assertEqual(self.my_circular_queue.front(), 1)
+        self.assertEqual(self.my_circular_queue.rear(), 5)
+        self.assertTrue(self.my_circular_queue.is_full())
+
+    def test_de_queue(self):
+        self.my_circular_queue.de_queue()
+        self.assertEqual(self.my_circular_queue.front(), 2)
+
+    def test_is_empty(self):
+        self.assertFalse(self.my_circular_queue.is_empty())
+        self.my_circular_queue.de_queue()
+        self.my_circular_queue.de_queue()
+        self.my_circular_queue.de_queue()
+        self.assertTrue(self.my_circular_queue.is_empty())
