@@ -30,13 +30,24 @@ def is_valid(string: str) -> bool:
     # 奇数长度肯定不匹配
     if len(string) % 2 != 0:
         return False
-    m = {')': '(', '}': '{', ']': '['}
     stack = []
+    # 右括号映射到其对应的左括号
+    mapping = {")": "(", "]": "[", "}": "{"}
     for ch in string:
-        if ch not in m:  # 不是右括号(是左括号)则进栈
+        # 如果是左括号，压入栈
+        if ch in mapping.values():  # 检查 ch 是否是某个右括号对应的“值”（即左括号）
             stack.append(ch)
-        elif not stack or m[ch] != stack.pop():  # 栈不为空说明匹配不完,栈顶[全都是左括号]对应的右括号不能匹配
-            return False
+        # 如果是右括号
+        elif ch in mapping.keys():  # 检查 ch 是否是某个右括号的“键”（即右括号本身）
+            # 检查栈是否为空 (没有左括号可匹配)
+            # 或者栈顶元素不是当前右括号期望的左括号
+            if not stack or mapping[ch] != stack.pop():  #
+                return False
+        # 处理既不是左括号也不是右括号的字符，如果题目保证只有括号，这段可以省略
+        # else:
+        #     pass # 或者 raise ValueError("Invalid character in string")
+
+    # 遍历完成后，检查栈是否为空。如果栈为空，所有左括号都匹配了。
     return not stack
 
 
