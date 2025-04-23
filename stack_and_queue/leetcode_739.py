@@ -46,14 +46,23 @@ class DailyTemperature:
         单调栈解法
         """
         n = len(temperature)
-        answer = [0] * n
-        stack = []
+        answer = [0] * n  # 初始化结果列表
+        stack = []  # 初始化栈，存储待处理的索引
+
+        # 从左往右遍历每一天的温度，i 是当前天的索引
         for i in range(n):
+            # 当栈不为空 并且 当前温度 temperature[i] 大于 栈顶索引对应的温度 temperature[stack[-1]] 时
             while stack and temperature[i] > temperature[stack[-1]]:
+                # 弹出栈顶的索引 top_index
                 top_index = stack.pop()
-                answer[i] = top_index - i
-            # 这里单调栈里存索引是因为要用索引计算距离
+
+                # 计算等待的天数 (i - top_index)，并将其记录在 answer[top_index] 位置
+                answer[top_index] = i - top_index
+
+            # 将当前天的索引 i 压入栈中，等待未来出现比它更高的温度
             stack.append(i)
+
+        # 遍历完所有温度后，answer 列表就是最终结果
         return answer
 
 
@@ -67,4 +76,4 @@ class TestDailyTemperature(unittest.TestCase):
         self.assertEqual(DailyTemperature.daily_temperatures(self.temps), [1, 1, 4, 2, 1, 1, 0, 0])
 
     def test_daily_temperatures1(self):
-        self.assertEqual(DailyTemperature.daily_temperatures(self.temps), [1, 1, 4, 2, 1, 1, 0, 0])
+        self.assertEqual(DailyTemperature.daily_temperatures1(self.temps), [1, 1, 4, 2, 1, 1, 0, 0])
