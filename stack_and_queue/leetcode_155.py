@@ -67,7 +67,7 @@ class MinStack:
             self.data_stack.pop()
             self.min_stack.pop()
 
-    def top(self) -> int:
+    def top(self) -> int | None:
         """
         Gets the top element of the stack.
         """
@@ -77,7 +77,7 @@ class MinStack:
         # 根据题目要求，pop 或 top 一个空栈的行为可能需要特殊处理，这里返回None或抛出异常
         return None  # 或者 raise IndexError("top from empty stack")
 
-    def get_min(self) -> int:
+    def get_min(self) -> int | None:
         """
         Retrieves the minimum element in the stack.
         """
