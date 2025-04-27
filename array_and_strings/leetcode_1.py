@@ -55,6 +55,6 @@ def two_sum(nums: list[int], target: int) -> list[int]:
 class TestTwoSums(unittest.TestCase):
 
     def test_two_sum(self):
-        self.assertTrue(two_sum(nums=[2, 7, 11, 15], target=9), [0, 1])
-        self.assertTrue(two_sum(nums=[2, 7, 11, 15], target=9), [0, 1])
-        self.assertTrue(two_sum(nums=[3, 3], target=6), [0, 1])
+        self.assertEqual(two_sum(nums=[2, 7, 11, 15], target=9), [0, 1])
+        self.assertEqual(two_sum(nums=[2, 7, 11, 15], target=9), [0, 1])
+        self.assertEqual(two_sum(nums=[3, 3], target=6), [0, 1])
