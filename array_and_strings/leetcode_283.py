@@ -48,8 +48,8 @@ def move_zeroes(nums: list[int]) -> list[int]:
     return nums
 
 
-class TestTwoSums(unittest.TestCase):
+class TestMoveZeroes(unittest.TestCase):
 
-    def test_two_sum(self):
+    def test_move_zeroes(self):
         self.assertEqual(move_zeroes(nums=[0, 1, 0, 3, 12]), [1, 3, 12, 0, 0])
         self.assertTrue(move_zeroes(nums=[0]), [0])
