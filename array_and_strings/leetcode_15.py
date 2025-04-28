@@ -97,4 +97,4 @@ class TestThreeSum(unittest.TestCase):
         self.assertEqual([], three_sum([0, 1, 1]))
         self.assertEqual([[0, 0, 0]], three_sum(nums=[0, 0, 0]))
         self.assertEqual([[-2, 0, 2], [-2, 1, 1]], three_sum(nums=[-2, 0, 1, 1, 2]))
-        self.assertEqual([[-4, 2, 2], [-1, -1, 2], [-1, 0, 1]], three_sum(nums=[-4, -1, -1, 0, 1, 2]))
+        self.assertEqual([[-1, -1, 2], [-1, 0, 1]], three_sum(nums=[-4, -1, -1, 0, 1, 2]))
