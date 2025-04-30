@@ -23,6 +23,7 @@
 -100 <= Node.val <= 100
 l1 和 l2 均按 非递减顺序 排列
 """
+import unittest
 
 
 # Definition for singly-linked list.
@@ -65,5 +66,26 @@ def merge_two_lists(list1: ListNode, list2: ListNode) -> ListNode:
     return dummy.next
 
 
+class TestMergeTwoList(unittest.TestCase):
 
+    def setUp(self):
+        self.head1 = ListNode(1)
+        self.head1.next = ListNode(3)
+        self.head1.next.next = ListNode(5)
+        self.head1.next.next.next = ListNode(7)
+        self.head1.next.next.next.next = ListNode(9)
+        self.head2 = ListNode(2)
+        self.head2.next = ListNode(4)
+        self.head2.next.next = ListNode(6)
+        self.head2.next.next.next = ListNode(8)
+        self.head2.next.next.next.next = ListNode(10)
+
+    def test_merge_two_lists(self):
+        temp = merge_two_lists(self.head1, self.head2)
+        self.assertEqual(1, temp.val)
+        self.assertEqual(2, temp.next.val)
+        self.assertEqual(3, temp.next.next.val)
+        self.assertEqual(4, temp.next.next.next.val)
+        self.assertEqual(5, temp.next.next.next.next.val)
+        self.assertEqual(6, temp.next.next.next.next.next.val)
 
