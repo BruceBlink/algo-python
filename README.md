@@ -22,7 +22,6 @@ LeetCode 系统刷题计划。这份计划旨在帮助您覆盖核心知识点�
             * 描述：给定 n 条直线，找出其中的两条直线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
         * [15. 3Sum (三数之和)](https://leetcode.cn/problems/3sum/)
             * 描述：在一个整数数组中找到所有和为 0 的三元组。
-
 2.  **链表 (Linked Lists)**
     * **概念：** 理解链表的节点结构和通过指针连接的特点，与数组的对比。
     * **技巧：** 遍历、节点增删改、反转、快慢指针。
@@ -31,11 +30,16 @@ LeetCode 系统刷题计划。这份计划旨在帮助您覆盖核心知识点�
             * 描述：反转一个单链表。
         * [21. Merge Two Sorted Lists (合并两个有序链表)](https://leetcode.cn/problems/merge-two-sorted-lists/)
             * 描述：将两个升序链表合并为一个新的升序链表。
+        * [23. Merge-K-Sorted-Lists (合并K个升序链表)](https://leetcode.cn/problems/merge-k-sorted-lists/)
+            * 描述：将若干个升序链表合并为一个新的升序链表。
         * [141. Linked List Cycle (环形链表)](https://leetcode.cn/problems/linked-list-cycle/)
             * 描述：判断一个链表是否包含环。
+        * [142. Linked-List-Cycle-II (环形链表II)](https://leetcode.cn/problems/linked-list-cycle-ii/)
+            * 描述：判断一个链表是否包含环，如果有环返回入环的起点。
         * [19. Remove Nth Node From End of List (删除链表的倒数第 N 个结点)](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/)
             * 描述：删除链表的倒数第 N 个节点。
-
+        * [160. Intersection-Of-Two-Linked-Lists(相交链表)](https://leetcode.cn/problems/intersection-of-two-linked-lists/)
+            * 描述：找到并返回两个单链表相交的起始节点。
 3.  **栈 (Stacks) & 队列 (Queues)**
     * **概念：** 理解栈的 LIFO (后进先出) 和队列的 FIFO (先进先出) 原则。
     * **技巧：** 利用它们的特性解决问题。
@@ -48,7 +52,6 @@ LeetCode 系统刷题计划。这份计划旨在帮助您覆盖核心知识点�
             * 描述：使用两个栈实现一个队列。
         * [225. Implement Stack using Queues (用队列实现栈)](https://leetcode.cn/problems/implement-stack-using-queues/)
             * 描述：使用一个或多个队列实现一个栈。
-
 4.  **哈希表 (Hash Tables)**
     * **概念：** 理解哈希表的键值对存储和 O(1) 平均时间复杂度的存取特性。
     * **技巧：** 用于快速查找、计数、去重、存储映射关系。
@@ -58,7 +61,6 @@ LeetCode 系统刷题计划。这份计划旨在帮助您覆盖核心知识点�
             * 描述：判断两个字符串是否是字母异位词（组成字母和数量相同）。
         * [350. Intersection of Two Arrays II (两个数组的交集 II)](https://leetcode.cn/problems/intersection-of-two-arrays-ii/)
             * 描述：计算两个数组的交集，结果中每个元素出现的次数应与两个数组中该元素的出现次数一致。
-
 5.  **二分查找 (Binary Search)**
     * **概念：** 理解在**有序**数据中快速查找的原理。
     * **技巧：** 递归或迭代实现，处理边界条件（左闭右闭，左闭右开等）。
