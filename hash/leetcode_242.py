@@ -25,7 +25,7 @@ def is_anagram(s: str, t: str) -> bool:
     return Counter(s) == Counter(t)
 
 
-class TestHasCycle(unittest.TestCase):
+class TestIsAnagram(unittest.TestCase):
 
     def test_has_cycle(self):
         self.assertTrue(is_anagram(s="anagram", t="nagaram"))

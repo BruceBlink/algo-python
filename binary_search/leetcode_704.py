@@ -38,7 +38,7 @@ def search(nums: list[int], target: int) -> int:
     return -1
 
 
-class TestHasCycle(unittest.TestCase):
+class TestSearch(unittest.TestCase):
 
     def test_search(self):
         self.assertEqual(4, search(nums=[-1, 0, 3, 5, 9, 12], target=9))
