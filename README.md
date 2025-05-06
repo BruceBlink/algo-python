@@ -90,6 +90,8 @@ LeetCode 系统刷题计划。这份计划旨在帮助您覆盖核心知识点�
             * 描述：翻转二叉树的左右子树。
         * [98. Validate Binary Search Tree (验证二叉搜索树)](https://leetcode.cn/problems/validate-binary-search-tree/)
             * 描述：判断一个二叉树是否是一个有效的二叉搜索树。
+        * [235. Lowest Common Ancestor of a Binary Search Tree (二叉搜索树的最近公共祖先)](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-search-tree/)
+            * 描述：找到给定两个节点的最近公共祖先。
         * [236. Lowest Common Ancestor of a Binary Tree (二叉树的最近公共祖先)](https://leetcode.cn/problems/lowest-common-ancestor-of-a-binary-tree/)
             * 描述：找到给定两个节点的最近公共祖先。
 
