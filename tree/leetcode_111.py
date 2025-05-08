@@ -65,6 +65,32 @@ def list_to_tree(values: list) -> TreeNode | None:
     return root
 
 
+def min_depth(root: TreeNode | None) -> int:
+    """
+    dfs的模板代码
+    """
+    if not root:
+        return 0
+    queue = deque()
+    depth = 1
+    queue.append(root)
+    while queue:
+        level_size = len(queue)
+        # 扩散队列中的节点
+        for _ in range(level_size):
+            cur_node = queue.popleft()
+            # 没有左右节点说明到底了
+            if not cur_node.left and not cur_node.right:
+                return depth
+            # 如果有子节点，则将当前节点的相邻子节点加入队列继续下一轮的判断
+            if cur_node.left:
+                queue.append(cur_node.left)
+            if cur_node.right:
+                queue.append(cur_node.right)
+        depth += 1
+    return depth
+
+
 def min_depth_loop(root: TreeNode | None) -> int:
     """
     迭代
@@ -153,6 +179,9 @@ class TestMinDepth(unittest.TestCase):
         actual_output = min_depth_recursion(root)
         self.assertEqual(actual_output, expected_output)
 
+        actual_output = min_depth(root)
+        self.assertEqual(actual_output, expected_output)
+
     def test_example_2(self):
         # LeetCode 示例 2: 只有右子树的斜树
         # Input: root = [2,null,3,null,4,null,5,null,6]
@@ -168,6 +197,9 @@ class TestMinDepth(unittest.TestCase):
         actual_output = min_depth_recursion(root)
         self.assertEqual(actual_output, expected_output)
 
+        actual_output = min_depth(root)
+        self.assertEqual(actual_output, expected_output)
+
     def test_empty_tree(self):
         # 空树的最小深度是 0
         # Input: root = [] (表示 None)
@@ -181,6 +213,9 @@ class TestMinDepth(unittest.TestCase):
         actual_output = min_depth_recursion(root)
         self.assertEqual(actual_output, expected_output)
 
+        actual_output = min_depth(root)
+        self.assertEqual(actual_output, expected_output)
+
     def test_single_node(self):
         # 单个节点本身就是叶子节点，深度是 1
         # Input: root = [1]
@@ -192,6 +227,9 @@ class TestMinDepth(unittest.TestCase):
         self.assertEqual(actual_output, expected_output)
 
         actual_output = min_depth_recursion(root)
+        self.assertEqual(actual_output, expected_output)
+
+        actual_output = min_depth(root)
         self.assertEqual(actual_output, expected_output)
 
     def test_simple_complete_tree(self):
@@ -209,6 +247,9 @@ class TestMinDepth(unittest.TestCase):
         self.assertEqual(actual_output, expected_output)
 
         actual_output = min_depth_recursion(root)
+        self.assertEqual(actual_output, expected_output)
+
+        actual_output = min_depth(root)
         self.assertEqual(actual_output, expected_output)
 
     def test_left_branch_shorter(self):
@@ -230,6 +271,9 @@ class TestMinDepth(unittest.TestCase):
         actual_output = min_depth_recursion(root)
         self.assertEqual(actual_output, expected_output)
 
+        actual_output = min_depth(root)
+        self.assertEqual(actual_output, expected_output)
+
     def test_right_branch_shorter(self):
         # 右边分支最短
         # Input: [1, 2, 3, null, null, 4, 5]
@@ -247,6 +291,9 @@ class TestMinDepth(unittest.TestCase):
         self.assertEqual(actual_output, expected_output)
 
         actual_output = min_depth_recursion(root)
+        self.assertEqual(actual_output, expected_output)
+
+        actual_output = min_depth(root)
         self.assertEqual(actual_output, expected_output)
 
     def test_zig_zag_to_leaf(self):
@@ -270,4 +317,7 @@ class TestMinDepth(unittest.TestCase):
         self.assertEqual(actual_output, expected_output)
 
         actual_output = min_depth_recursion(root)
+        self.assertEqual(actual_output, expected_output)
+
+        actual_output = min_depth(root)
         self.assertEqual(actual_output, expected_output)
