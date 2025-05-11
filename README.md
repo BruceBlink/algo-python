@@ -100,9 +100,9 @@ LeetCode 系统刷题计划。这份计划旨在帮助您覆盖核心知识点�
             * 描述：找到给定两个节点的最近公共祖先。
         * [543. Diameter Of Binary Tree (二叉树的直径)](https://leetcode.cn/problems/diameter-of-binary-tree/)
             * 描述：找到树中任意两个节点之间最长路径的长度。
-        * [114. Flatten Binary Tree To Linked List(二叉树展开为链表)](https://leetcode.cn/problems/invert-binary-tree/)
+        * [114. Flatten Binary Tree To Linked List(二叉树展开为链表)](https://leetcode.cn/problems/flatten-binary-tree-to-linked-list/)
             * 描述：给你一棵二叉树的根节点 root ，翻转这棵二叉树，并返回其根节点。
-        * [116. Populating Next Right Pointers In Each Node(二叉树展开为链表)](https://leetcode.cn/problems/invert-binary-tree/)
+        * [116. Populating Next Right Pointers In Each Node(填充每个节点的下一个右侧节点指针)](https://leetcode.cn/problems/populating-next-right-pointers-in-each-node/)
             * 描述：给你一棵二叉树的根节点 root ，翻转这棵二叉树，并返回其根节点。
 2.  **图 (Graphs) - 基础**
     * **概念：** 理解图的表示方法（邻接矩阵、邻接表），掌握 BFS 和 DFS 在图上的应用。
