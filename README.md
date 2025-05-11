@@ -104,6 +104,8 @@ LeetCode 系统刷题计划。这份计划旨在帮助您覆盖核心知识点�
             * 描述：给你一棵二叉树的根节点 root ，翻转这棵二叉树，并返回其根节点。
         * [116. Populating Next Right Pointers In Each Node(填充每个节点的下一个右侧节点指针)](https://leetcode.cn/problems/populating-next-right-pointers-in-each-node/)
             * 描述：给你一棵二叉树的根节点 root ，翻转这棵二叉树，并返回其根节点。
+        * [654. Maximum Binary Tree(最大二叉树)](https://leetcode.cn/problems/maximum-binary-tree/)
+            * 描述：给你一棵二叉树的根节点 root ，翻转这棵二叉树，并返回其根节点。
 2.  **图 (Graphs) - 基础**
     * **概念：** 理解图的表示方法（邻接矩阵、邻接表），掌握 BFS 和 DFS 在图上的应用。
     * **技巧：** BFS (队列), DFS (递归或栈), 访问标记。
