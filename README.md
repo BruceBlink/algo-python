@@ -108,6 +108,8 @@ LeetCode 系统刷题计划。这份计划旨在帮助您覆盖核心知识点�
             * 描述：给你一棵二叉树的根节点 root ，翻转这棵二叉树，并返回其根节点。
         * [105. Construct Binary Tree From Preorder And Inorder Traversal(从前序与中序遍历序列构造二叉树)](https://leetcode.cn/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
             * 描述：根据二叉树的前序、中序遍历结果构造二叉树。
+        * [106. Construct Binary Tree From Inorder And Postorder Traversal(从中序与后序遍历序列构造二叉树)](https://leetcode.cn/problems/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+            * 描述：根据二叉树的中序、后续遍历结果构造二叉树。
 2.  **图 (Graphs) - 基础**
     * **概念：** 理解图的表示方法（邻接矩阵、邻接表），掌握 BFS 和 DFS 在图上的应用。
     * **技巧：** BFS (队列), DFS (递归或栈), 访问标记。
