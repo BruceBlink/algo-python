@@ -33,7 +33,7 @@ import unittest
 
 
 class Solution:
-    def coinChange(self, coins: list[int], amount: int) -> int:
+    def _coinChange(self, coins: list[int], amount: int) -> int:
         def dp(_coins, _amount) -> int:
             if _amount == 0:
                 return 0
@@ -137,7 +137,7 @@ class Solution:
         # 从主函数调用记忆化后的递归函数入口，开始计算目标 amount
         return dp(amount)
 
-    def coinChange3(self, coins: list[int], amount: int) -> int:
+    def coinChange(self, coins: list[int], amount: int) -> int:
         # 创建一个 dp 数组，dp[i] 存储凑成金额 i 所需的最少硬币数。
         # 数组大小为 amount + 1，索引从 0 到 amount。
         # 初始化所有值为 amount + 1，这比任何可能的有效结果都大，
@@ -172,7 +172,102 @@ class TestCoinChange(unittest.TestCase):
         # LeetCode 示例 1
         coins = [1, 2, 5]
         amount = 11
-        expected_sum = 3  # 解释：11 = 5 + 5 + 1
+        expected_coins = 3  # (5 + 5 + 1)
         solution = Solution()
-        actual_sum = solution.coinChange(coins, amount)
-        self.assertEqual(actual_sum, expected_sum)
+        actual_coins = solution.coinChange(coins, amount)
+        self.assertEqual(actual_coins, expected_coins)
+
+    def test_example_2(self):
+        # LeetCode 示例 2
+        coins = [2]
+        amount = 3
+        expected_coins = -1  # 无法凑成
+        solution = Solution()
+        actual_coins = solution.coinChange(coins, amount)
+        self.assertEqual(actual_coins, expected_coins)
+
+    def test_example_3_amount_zero(self):
+        # LeetCode 示例 3，金额为 0
+        coins = [1]
+        amount = 0
+        expected_coins = 0  # 凑成金额 0 需要 0 个硬币
+        solution = Solution()
+        actual_coins = solution.coinChange(coins, amount)
+        self.assertEqual(actual_coins, expected_coins)
+
+    def test_single_coin_exact_amount(self):
+        # 单一硬币，正好凑成金额
+        coins = [5]
+        amount = 5
+        expected_coins = 1
+        solution = Solution()
+        actual_coins = solution.coinChange(coins, amount)
+        self.assertEqual(actual_coins, expected_coins)
+
+    def test_single_coin_multiple_times(self):
+        # 单一硬币，需要多次使用
+        coins = [3]
+        amount = 9
+        expected_coins = 3  # (3 + 3 + 3)
+        solution = Solution()
+        actual_coins = solution.coinChange(coins, amount)
+        self.assertEqual(actual_coins, expected_coins)
+
+    def test_single_coin_cannot_make_amount(self):
+        # 单一硬币，无法凑成金额
+        coins = [5]
+        amount = 7
+        expected_coins = -1
+        solution = Solution()
+        actual_coins = solution.coinChange(coins, amount)
+        self.assertEqual(actual_coins, expected_coins)
+
+    def test_mixed_coins_complex(self):
+        # 混合硬币，更复杂的组合
+        coins = [3, 5]
+        amount = 7
+        expected_coins = -1  # (3+3=6, 5+?=无法凑7)
+        solution = Solution()
+        actual_coins = solution.coinChange(coins, amount)
+        self.assertEqual(actual_coins, expected_coins)
+
+    def test_mixed_coins_exact_match(self):
+        # 混合硬币，恰好是硬币面额之和
+        coins = [3, 7]
+        amount = 10
+        expected_coins = 2  # (3 + 7)
+        solution = Solution()
+        actual_coins = solution.coinChange(coins, amount)
+        self.assertEqual(actual_coins, expected_coins)
+
+    def test_large_amount_and_multiple_coins(self):
+        # LeetCode 中常见的较大金额和多硬币组合测试用例
+        coins = [186, 419, 83, 408]
+        amount = 6249
+        expected_coins = 20
+        solution = Solution()
+        actual_coins = solution.coinChange(coins, amount)
+        self.assertEqual(actual_coins, expected_coins)
+
+    def test_another_large_amount(self):
+        # 另一个较大金额的测试
+        coins = [1, 2, 5]
+        amount = 100
+        expected_coins = 20  # (20 * 5)
+        solution = Solution()
+        actual_coins = solution.coinChange(coins, amount)
+        self.assertEqual(actual_coins, expected_coins)
+
+    def test_small_coins_large_amount(self):
+        # 小硬币，大金额
+        coins = [1]
+        amount = 9999
+        expected_coins = 9999
+        solution = Solution()
+        actual_coins = solution.coinChange(coins, amount)
+        self.assertEqual(actual_coins, expected_coins)
+
+
+# This allows running the tests from the command line
+if __name__ == '__main__':
+    unittest.main(argv=['first-arg-is-ignored'], exit=False)
