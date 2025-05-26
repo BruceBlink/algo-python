@@ -26,26 +26,6 @@ import unittest
 
 
 class Solution:
-
-    def maxProfit_bruteforce(self, prices: list[int]) -> int:
-        n = len(prices)
-        if n <= 1:
-            return 0 # 如果天数小于等于1，无法进行买卖，利润为0
-
-        max_profit = 0
-
-        # 外层循环：遍历所有可能的买入日期 (i)
-        for i in range(n):
-            # 内层循环：遍历所有可能的卖出日期 (j)，确保卖出日期在买入日期之后
-            for j in range(i + 1, n):
-                # 计算当前买卖组合的利润
-                current_profit = prices[j] - prices[i]
-
-                # 更新最大利润
-                max_profit = max(max_profit, current_profit)
-
-        return max_profit
-
     def maxProfit(self, prices: list[int]) -> int:
         # 根据约束 1 <= prices.length，数组至少包含一个元素，无需检查空数组。
         # 如果数组只有一个元素，循环不会执行，max_profit 仍为 0，符合要求。
